@@ -3,6 +3,7 @@ package com.client.ws.rasmooplus.service.impl;
 import com.client.ws.rasmooplus.dto.SubscriptionTypeDto;
 import com.client.ws.rasmooplus.exception.BadRequestException;
 import com.client.ws.rasmooplus.exception.NotFoundException;
+import com.client.ws.rasmooplus.mapper.SubscriptionTypeMapper;
 import com.client.ws.rasmooplus.model.SubscriptionType;
 import com.client.ws.rasmooplus.repository.SubscriptionTypeRepository;
 import com.client.ws.rasmooplus.service.SubscriptionTypeService;
@@ -38,38 +39,25 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
             throw new BadRequestException("Id must be null");
         }
 
-        return subscriptionTypeRepository.save(
-                SubscriptionType.builder()
-                    .name(dto.getName())
-                    .accessMonth(dto.getAccessMonth())
-                    .price(dto.getPrice())
-                    .productKey(dto.getProductKey())
-                    .build()
-        );
+        return subscriptionTypeRepository.save(SubscriptionTypeMapper.fromDtoToEntity(dto));
     }
 
     @Override
     public SubscriptionType update(Long id, SubscriptionTypeDto dto) {
-        if (!subscriptionTypeRepository.existsById(id)) {
-            throw new NotFoundException("Subscription type not found");
-        }
-
-        return subscriptionTypeRepository.save(
-                SubscriptionType.builder()
-                        .id(id)
-                        .name(dto.getName())
-                        .accessMonth(dto.getAccessMonth())
-                        .price(dto.getPrice())
-                        .productKey(dto.getProductKey())
-                        .build()
-        );
+        validateSubscription(id);
+        dto.setId(id);
+        return subscriptionTypeRepository.save(SubscriptionTypeMapper.fromDtoToEntity(dto));
     }
 
     @Override
     public void delete(Long id) {
+        validateSubscription(id);
+        subscriptionTypeRepository.deleteById(id);
+    }
+
+    private void validateSubscription(Long id) {
         if (!subscriptionTypeRepository.existsById(id)) {
             throw new NotFoundException("Subscription type not found");
         }
-        subscriptionTypeRepository.deleteById(id);
     }
 }
