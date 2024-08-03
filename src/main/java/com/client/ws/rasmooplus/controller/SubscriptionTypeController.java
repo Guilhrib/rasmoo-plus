@@ -21,8 +21,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/subscription-type")
 public class SubscriptionTypeController {
-    @Autowired
-    private SubscriptionTypeService subscriptionTypeService;
+
+    private final SubscriptionTypeService subscriptionTypeService;
+
+    SubscriptionTypeController(SubscriptionTypeService subscriptionTypeService) {
+        this.subscriptionTypeService = subscriptionTypeService;
+    }
 
     @GetMapping
     public ResponseEntity<List<SubscriptionType>> findAll() {

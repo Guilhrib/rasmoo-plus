@@ -17,7 +17,7 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
 
     private final SubscriptionTypeRepository subscriptionTypeRepository;
 
-    public SubscriptionTypeServiceImpl(SubscriptionTypeRepository subscriptionTypeRepository) {
+    SubscriptionTypeServiceImpl(SubscriptionTypeRepository subscriptionTypeRepository) {
         this.subscriptionTypeRepository = subscriptionTypeRepository;
     }
 
